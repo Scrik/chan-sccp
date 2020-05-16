@@ -324,7 +324,6 @@ sccp_conference_t *sccp_conference_create(devicePtr device, channelPtr channel)
 		participant->device = sccp_device_retain(device);
 		participant->conferenceBridgePeer = channel->owner;
 		sccp_conference_update_callInfo(channel, participant->conferenceBridgePeer, participant, conference->id);
-		sccp_indicate(device, channel, SCCP_CHANNELSTATE_CONNECTEDCONFERENCE);
 		//ast_set_flag(&(participant->features.feature_flags), AST_BRIDGE_CHANNEL_FLAG_DISSOLVE_HANGUP);
 		
 		if (pbx_pthread_create_background(&participant->joinThread, NULL, sccp_conference_thread, participant) < 0) {
@@ -347,7 +346,6 @@ sccp_conference_t *sccp_conference_create(devicePtr device, channelPtr channel)
 		sccp_dev_set_keyset(device, sccp_device_find_index_for_line(device, channel->line->name), channel->callid, KEYMODE_CONNCONF);
 		pbx_builtin_setvar_int_helper(channel->owner, "__SCCP_CONFERENCE_ID", conference->id);
 		pbx_builtin_setvar_int_helper(channel->owner, "__SCCP_CONFERENCE_PARTICIPANT_ID", participant->id);
-		sccp_indicate(device, channel, SCCP_CHANNELSTATE_CONNECTEDCONFERENCE);
 		sccp_log((DEBUGCAT_CORE + DEBUGCAT_CONFERENCE)) (VERBOSE_PREFIX_4 "SCCPCONF/%04d: Added Moderator %d (Channel: %s)\n", conference->id, participant->id, pbx_channel_name(participant->conferenceBridgePeer));
 	}
 
@@ -581,7 +579,6 @@ boolean_t sccp_conference_addParticipatingChannel(conferencePtr conference, cons
 			if(device) {
 				participant->playback_announcements = device->conf_play_part_announce;
 				iPbx.setChannelLinkedId(channel, conference->linkedid);
-				sccp_indicate(device, channel, SCCP_CHANNELSTATE_CONNECTEDCONFERENCE);
 #if CS_REFCOUNT_DEBUG
 				sccp_refcount_addRelationship(device, participant);
 				sccp_refcount_addRelationship(channel, participant);
