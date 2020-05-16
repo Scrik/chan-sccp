@@ -1268,7 +1268,6 @@ void * sccp_pbx_softswitch(constChannelPtr channel)
 					}
 					sccp_log((DEBUGCAT_CORE)) (VERBOSE_PREFIX_3 "%s: (sccp_pbx_softswitch) Start Conference\n", d->id);
 					sccp_feat_conference_start(d, instance, c);
-					sccp_indicate(d, c, SCCP_CHANNELSTATE_CONNECTEDCONFERENCE);
 				}
 				goto EXIT_FUNC;
 #endif														// CS_SCCP_CONFERENCE
