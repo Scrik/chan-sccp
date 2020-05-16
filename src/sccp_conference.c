@@ -417,7 +417,6 @@ static void sccp_conference_connect_bridge_channels_to_participants(constConfere
 		if (participant && participant->bridge_channel != bridge_channel) {
 			sccp_log((DEBUGCAT_CORE + DEBUGCAT_CONFERENCE)) (VERBOSE_PREFIX_4 "SCCPCONF/%04d: Connecting Bridge Channel %p to Participant %d.\n", conference->id, bridge_channel, participant->id);
 			participant->bridge_channel = bridge_channel;
-			sccp_participant_t * participant = NULL;
 			if(participant->isModerator) {
 				sccp_device_t * device = participant->device;
 				sccp_channel_t * channel = participant->channel;
